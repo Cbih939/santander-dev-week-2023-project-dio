@@ -73,4 +73,44 @@ public class User {
         this.news = news;
     }
 
+    // Atualizar usuario
+    public void updateUserData(String newName, Account newAccount, Card newCard,
+                               List<Feature> newFeatures, List<News> newNews) {
+        if (newName != null && !newName.isEmpty()) {
+            this.name = newName;
+        }
+        if (newAccount != null) {
+            this.account = newAccount;
+        }
+        if (newCard != null) {
+            this.card = newCard;
+        }
+        if (newFeatures != null) {
+            this.features = newFeatures;
+        }
+        if (newNews != null) {
+            this.news = newNews;
+        }
+    }
+
+    // Deletar usuario
+    public void deleteUser(EntityManager entityManager) {
+        if (entityManager != null) {
+            EntityTransaction transaction = entityManager.getTransaction();
+            try {
+                transaction.begin();
+
+                // Remova o usuário do banco de dados
+                entityManager.remove(this);
+
+                transaction.commit();
+            } catch (Exception e) {
+                if (transaction != null && transaction.isActive()) {
+                    transaction.rollback();
+                }
+                e.printStackTrace(); // Trate ou lance a exceção conforme necessário
+            }
+        }
+    }
 }
+
